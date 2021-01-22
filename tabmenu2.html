@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스크립트없이 작동되는 탭메뉴 쉽게 만들기 - 2</title>
+    <style>
+        .tab_content {
+            width: 500px;
+            margin: auto;
+            text-align: center;
+        }
+        input[type="radio"] {
+            display: none;
+        }
+        .conbox {
+            width: 500px;
+            height: 500px;
+            background: #aaa;
+            display: none;
+            font-size: 30px;
+            line-height: 500px;
+        }
+        .btn {
+            padding: 10px;
+        }
+        label[for*="tab"]{
+            display: inline-block;
+            padding: 10px;
+            background: #ccc;
+            cursor: pointer;
+            margin-right: 5px;
+            border-radius: 100%; 
+            /*border-radius: 50%,100%의 차이 
+            50%부터는 원이 되지만
+            모서리 별로 각각 다르게 줄 땐 차이 발생.
+            */
+        }
+        input[id="tab01"]:checked ~ .con1 {
+            display: block;
+        }
+        input[id="tab02"]:checked ~ .con2 {
+            display: block;
+        }
+        input[id="tab03"]:checked ~ .con3 {
+            display: block;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="tab_content">
+        <input type="radio" name="tabmenu" id="tab01" checked>
+        <input type="radio" name="tabmenu" id="tab02">
+        <input type="radio" name="tabmenu" id="tab03">
+
+        <div class="conbox con1">컨텐츠탭 내용01</div>
+        <div class="conbox con2">컨텐츠탭 내용02</div>
+        <div class="conbox con3">컨텐츠탭 내용03</div>
+
+        <div class="btn">
+            <label for="tab01"></label>
+            <label for="tab02"></label>
+            <label for="tab03"></label>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

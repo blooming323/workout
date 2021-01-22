@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스크립트없이 작동되는 탭메뉴 쉽게 만들기 - 1</title>
+    <style>
+        .tab_content {
+            margin: 0 auto;
+            width: 500px;
+            height: 600px;
+        }
+        input[type="radio"] {
+            display: none;
+        }
+        input[type="radio"] + label { /* '+' 인접요소 선택자 (input[type="radio"]의 형제 label) */
+            display: inline-block;
+            padding: 20px;
+            background: #ccc;
+            color: #999;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        input[type="radio"]:checked + label { /* ':checked' 체크가 되었을 때 변화되는 속성*/
+            background: #aaa;
+            color: #000;
+        }
+        .conbox {
+            width: 500px;
+            height: 600px;
+            background: #aaa;
+            margin: 0 auto;
+            display: none;
+        }
+        input[id="tab01"]:checked ~ .con1 {
+            display: block;
+        }
+        input[id="tab02"]:checked ~ .con2 {
+            display: block;
+        }
+        input[id="tab03"]:checked ~ .con3 {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!--
+        #선택자
+        전체 선택자: '*' html전체선택 (* {padding:0; margin:0;}으로 보통 페이지를 reset할 때 사용됨 )
+        유형 선택자: 태그 고유의 이름 (예: div, h1, header, nav, section, article, aside, footer....)
+                  해당 유형의 태그 전체가 선택 되어진다.
+                  보통은 시멘틱태그만 사용한다.
+                  @시멘틱태그
+                  header 문서 또는 섹션 헤더를 지정합니다. 사이트 로고, 링크(회원가입, 언어셋등), 소개등을 넣습니다.
+                  nav 네비게이션 링크를 표현합니다. 보통 메뉴 영역으로 사용합니다.
+                  section 내용 컨텐츠, 같은 주제의 내용일 때 section으로 묶어 사용합니다.
+                  article section태그의 하위 개념으로 분류되며 뉴스기사와 블로그 글 같은 독립적인 내용이 들어갑니다.
+                  aside 사이드바에 사용됩니다. ㅈ로 배너나 최근 글등으로 사용합니다.
+                  footer 문서의 footer로 사용합니다. 사이트의 정보와 주소/연락처 그리고 저작권 등을 넣습니다.
+        아이디 선택자: '#id' 해당 id를 가진 태그를 선택 (id는 js, css, php등에서 사용되기 때문에 중복되지 않게 하나의 요소에 하나의 id만 만들어야한다.)
+        클래스 선택자: '.class' 해당 클래스를 가진 태그를 선택 띄어쓰기를 해서 한개 이상의 클래스명을 가질 수 있음.
+        자식 선택자: 'header > div'(각각의 태그에 클래스를 줘서 사용해도 되지만 자식 선택자를 선택해 코딩이 단순화 되고 질서를 잡을 수 있기 때문에 클래스명보단 자식선택자를 사용하는 것이 좋다. )
+        인접(형제) 선택자: 'element + element' 지정된 요소 그 다음에 오는 형제만 선택 (input + label {} 인풋 다음요소인 label을 선택하기 위해 +를 자주 사용)
+        일반(형제) 선택자: 'element ~ element' 지정된 요소 그 다음에 오는 형제들 선택
+        속성 선택자:  element[attr="value"]{} 'attr'속성의 값이 정확하게 'value'와 일치하는 요소를 선택합니다.
+                    element[attr~="value"]{} 'attr'속성의 값에 'value'이 포함되는 요소를 선택합니다.(공백으로 분리된 값이 일치해야합니다.)
+                    element[attr^="value"]{} 'attr'속성의 값이 'value'로 시작하는 요소를 선택합니다.
+                    element[attr$="value"]{} 'attr'속성의 값이 'value'로 끝나는 요소를 선택합니다.
+                    element[attr*="value"]{} 'attr'속성의 값에 'value'가 포함되는 요소를 선택합니다.
+                    element[attr|="value"]{} 'attr'속성의 값이 정확하게 'value'이거나 'value-'로 시작되는 요소를 선택합니다.
+                    element[attr="value"]{}, element[attr^="value"]{}, element[attr$="value"]{}, element[attr*="value"]{} 네가지를 자주 사용
+        구조적 가상요소 선택자: :first-child, 첫번째 자식요소
+                            :last-child 마지막 자식요소
+                            :nth-child(n) n에 숫자를 넣어주면 몇번째 요소를 선택함
+                                       2n으로 입력하면 2의 배수로 선택
+                                       even을 입력하면 짝수 순서의 요소 선택
+                                       odd 홀수 순서의 요소 선택
+                            주의// :nth-child(n)을 사용할때 다른 코드가 중간에 있다면 적용되지 않는다.
+
+    -->
+    <div class="tab_content">
+        <input type="radio" name="tabmenu" id="tab01" checked>
+        <label for="tab01">컨텐츠탭버튼01</label>
+        <input type="radio" name="tabmenu" id="tab02">
+        <label for="tab02">컨텐츠탭버튼02</label>
+        <input type="radio" name="tabmenu" id="tab03">
+        <label for="tab03">컨텐츠탭버튼03</label>
+        <div class="conbox con1">컨텐츠탭 내용01</div>
+        <div class="conbox con2">컨텐츠탭 내용02</div>
+        <div class="conbox con3">컨텐츠탭 내용03</div>
+    </div>
+</body>
+</html>
